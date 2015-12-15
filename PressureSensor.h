@@ -7,7 +7,7 @@
 // #define HUGGI_PRESSURE_SENSOR_DEBUG
 
 #define MAX_SAMPLES          4      // samples for calibation
-#define DEFAULT_SENSITIVITY  0.75
+#define DEFAULT_SENSITIVITY  0.65
 
 typedef struct {
     int pin;

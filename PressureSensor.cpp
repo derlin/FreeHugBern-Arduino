@@ -42,7 +42,7 @@ bool PressureSensor::isPressed()
         }
     }
 
-    return count == nbrOfInputs;
+    return count > 1;
 }
 #else
 bool PressureSensor::isPressed()
@@ -52,9 +52,9 @@ bool PressureSensor::isPressed()
         double val = analogRead(inputs[i].pin);
         double delta = abs(inputs[i].refValue - val) / inputs[i].refValue; 
 
-        if(delta < sensitivity) return false;
+        if(delta > sensitivity) return true;
     }
-    return true;
+    return false;
 }
 #endif
 
