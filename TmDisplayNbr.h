@@ -1,5 +1,5 @@
-#ifndef TM_DISPLAY_COUNT
-#define TM_DISPLAY_COUNT
+#ifndef TM_DISPLAY_NBR
+#define TM_DISPLAY_NBR
 
 #include <TM1640.h>
 
@@ -28,24 +28,22 @@ LTM_INT32 TDC_NBR_BITMAPS[20] = // http://www.coranac.com/tonc/text/text.htm
 };
 
 
-class TmCounter 
+class TmPair
 {
 
 public:
-    TmCounter(TM1640 left, TM1640 right, bool isRed = true, int count = 0) : 
-        left(left), right(right), isRed(isRed), count(count)
-        {
-            this->redisplay();
-        }
+    TmPair(TM1640 left, TM1640 right, bool isRed = true) : 
+        left(left), right(right), isRed(isRed){}
 
-        void set(int count)
+        void set(int displayed)
         { 
-            this->count = count; 
+            this->displayed = displayed; 
+            this->display();
         }
 
         int get()
         { 
-            return this->count; 
+            return this->displayed; 
         }
 
         void setColor(bool isRed)
@@ -53,25 +51,19 @@ public:
             this->isRed = isRed;
         }
 
-        void increment()
-        { 
-            this->count++; 
-            if(this->count > 99) this->count = 0;
-            this->redisplay(); 
-        }
-
-        void redisplay()
+        void display()
         {
-            this->displayNumber(this->left, this->count / 10);
-            this->displayNumber(this->right, this->count % 10);
+            this->displayNumber(this->left, this->displayed / 10);
+            this->displayNumber(this->right, this->displayed % 10);
         }
 
+        void clear()
+        {
+            this->left.clearDisplay();
+            this->right.clearDisplay();
+        }
+        
 private:
-    void clear()
-    {
-        this->left.clearDisplay();
-        this->right.clearDisplay();
-    }
 
     void displayNumber(TM1640 &module, int nbr)
     {
@@ -92,7 +84,7 @@ private:
 
     TM1640 left, right;
     bool isRed;
-    int count;
+    int displayed;
 };
    
 #endif
